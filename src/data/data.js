@@ -43,7 +43,7 @@ function createNews(num) {
 	}
 }
 
-createNews(10);
+createNews(14);
 
 export { lastNews };
 //<---создание новостей

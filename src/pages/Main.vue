@@ -4,7 +4,15 @@ script
 		<div class="d-flex flex-row justify-content-between align-items-center">
 			<div>
 				<div class="search-block">
-					<my-input v-model="searchQuery" />
+					<my-input v-model="searchQuery" placeholder="поиск по полю name" />
+					<my-input
+						v-model="searchQueryDate"
+						placeholder="поиск по полю date"
+					/>
+					<my-input
+						v-model="searchQueryText"
+						placeholder="поиск по полю text"
+					/>
 				</div>
 			</div>
 			<div>
@@ -71,6 +79,8 @@ export default {
 			news: [],
 			allNews: lastNews,
 			searchQuery: "",
+			searchQueryDate: "",
+			searchQueryText: "",
 			selectedSort: "",
 			sortOptions: [
 				{ value: "id", name: "По полю id" },
@@ -124,6 +134,13 @@ export default {
 	mounted() {
 		this.fetchPosts();
 	},
+	computed: {
+		searchQueryResult() {
+			return this.news.filter((item) =>
+				item.name.includes(this.searchQuery.toLowerCase())
+			);
+		},
+	},
 	watch: {
 		selectedSort(newValue) {
 			console.log("newValue =>", newValue);
@@ -136,12 +153,53 @@ export default {
 				console.log(err);
 			}
 		},
-	},
-	computed: {
-		searchQueryResult() {
-			return this.news.filter((item) =>
-				item.name.includes(this.searchQuery.toLowerCase())
-			);
+		searchQuery(newValue) {
+			if (!newValue) {
+				this.allNews = lastNews;
+			}
+			console.log("searchQuery(newValue) =>", newValue);
+			try {
+				const arr = this.allNews.filter((item) =>
+					item.name.includes(newValue.toLowerCase())
+				);
+				console.log("arr =>", arr);
+				this.allNews = arr;
+				this.fetchPosts();
+			} catch (err) {
+				console.log(`Ошибка в searchQuery(newValue) ${err}`);
+			}
+		},
+		searchQueryDate(newValue) {
+			if (!newValue) {
+				this.allNews = lastNews;
+			}
+			console.log("searchQuery(newValue) =>", newValue);
+			try {
+				const arr = this.allNews.filter((item) =>
+					item.date.includes(newValue.toLowerCase())
+				);
+				console.log("arr =>", arr);
+				this.allNews = arr;
+				this.fetchPosts();
+			} catch (err) {
+				console.log(`Ошибка в searchQuery(newValue) ${err}`);
+			}
+		},
+		searchQueryText(newValue) {
+			if (!newValue) {
+				this.allNews = lastNews;
+			}
+			console.log("searchQuery(newValue) =>", newValue);
+			try {
+				const arr = this.allNews.filter((item) =>
+					item.text.includes(newValue.toLowerCase())
+				);
+				console.log("arr =>", arr);
+				this.allNews = arr;
+				this.fetchPosts();
+			} catch (err) {
+				console.log(`Ошибка в searchQuery(newValue) ${err}`);
+			}
 		},
 	},
 };
@@ -177,7 +235,6 @@ export default {
 	background-color: teal;
 	color: white;
 }
-
 
 .news-list-item {
 	display: inline-block;
