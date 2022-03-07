@@ -1,27 +1,17 @@
 <template>
-	<nav class="nav-main">
-		<div class="container">
-			<div class="nav-wrapper align-items-center">
-				<div class="nav-left brand"><div>ИСУ</div></div>
-				<div class="nav-right">
-					<div class="title">Сайт</div>
-					<div class="title" style="margin-left: 15px">Данные</div>
-					<div class="title" style="margin-left: 15px">Поиск</div>
-				</div>
-			</div>
-		</div>
-	</nav>
+	<navbar></navbar>
 	<div class="content-main">
-		<div class="container">Основная часть</div>
+		<router-view></router-view>
 	</div>
 </template>
 
 <script>
 import Clock from "./components/Clock.vue";
 import { headerBtn } from "@/data/data";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
-	components: { Clock },
+	components: { Clock, Navbar },
 	data() {
 		return {
 			navLinks: headerBtn,
@@ -45,6 +35,10 @@ export default {
 * {
 	margin: 0;
 	padding: 0;
+}
+
+html {
+	overflow-y: scroll;
 }
 
 body {

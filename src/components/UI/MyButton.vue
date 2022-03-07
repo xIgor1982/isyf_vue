@@ -1,5 +1,5 @@
 <template>
-	<button class="btn" :class="isActiveClass()">
+	<button class="my-btn" :class="active">
 		<slot></slot>
 	</button>
 </template>
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.my-btn {
 	padding: 10px;
 	background: none;
 	color: teal;
@@ -31,8 +31,8 @@ export default {
 	cursor: pointer;
 	border-radius: 5px;
 }
-.btn:hover,
-.btn.active {
+.my-btn:hover,
+.my-btn.active {
 	background-color: teal;
 	color: white;
 	border-color: teal;
