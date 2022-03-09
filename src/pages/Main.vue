@@ -4,14 +4,15 @@ script
 		<div class="d-flex flex-row justify-content-between align-items-center">
 			<div>
 				<div class="search-block">
+					<my-input v-model="searchQueryId" placeholder="поиск по полю id" />
 					<my-input v-model="searchQuery" placeholder="поиск по полю name" />
-					<my-input
-						v-model="searchQueryDate"
-						placeholder="поиск по полю date"
-					/>
 					<my-input
 						v-model="searchQueryText"
 						placeholder="поиск по полю text"
+					/>
+					<my-input
+						v-model="searchQueryDate"
+						placeholder="поиск по полю date"
 					/>
 				</div>
 			</div>
@@ -31,19 +32,19 @@ script
 					:key="item.id"
 				>
 					<div class="card-header bg-transparent border-success">
-						Внесены изменения в: <strong>{{ item.id }}</strong>
+						Поле ID: <strong>{{ item.id }}</strong>
 					</div>
 					<div class="card-body text-success">
 						<h5 class="card-title">
-							Внесенные сведения: <strong>{{ item.name }}</strong>
+							Поле name: <strong>{{ item.name }}</strong>
 						</h5>
 						<p class="card-text">
-							добавлены данные: <strong>{{ item.text }}</strong>
+							Поле text: <strong>{{ item.text }}</strong>
 						</p>
 					</div>
 					<div class="card-footer bg-transparent border-success">
 						<div>
-							Дата изменения: <strong>{{ item.date }}</strong>
+							Поле date: <strong>{{ item.date }}</strong>
 						</div>
 					</div>
 				</div>
@@ -73,12 +74,13 @@ export default {
 	data() {
 		return {
 			page: 1,
-			limit: 7,
+			limit: 4,
 			totalPages: 0,
 			isPostLoading: false,
 			news: [],
 			allNews: lastNews,
 			searchQuery: "",
+			searchQueryId: "",
 			searchQueryDate: "",
 			searchQueryText: "",
 			selectedSort: "",
@@ -154,13 +156,12 @@ export default {
 			}
 		},
 		searchQuery(newValue) {
-			if (!newValue) {
-				this.allNews = lastNews;
-			}
+			if (this.page > 1) this.page = 1;
+			this.allNews = lastNews;
 			console.log("searchQuery(newValue) =>", newValue);
 			try {
 				const arr = this.allNews.filter((item) =>
-					item.name.includes(newValue.toLowerCase())
+					item.name.toLowerCase().includes(newValue.toLowerCase())
 				);
 				console.log("arr =>", arr);
 				this.allNews = arr;
@@ -169,14 +170,26 @@ export default {
 				console.log(`Ошибка в searchQuery(newValue) ${err}`);
 			}
 		},
-		searchQueryDate(newValue) {
-			if (!newValue) {
-				this.allNews = lastNews;
+		searchQueryId(newValue) {
+			if (this.page > 1) this.page = 1;
+			this.allNews = lastNews;
+			console.log("searchQueryId(newValue) =>", newValue);
+			try {
+				const arr = this.allNews.filter((item) => item.id.includes(newValue));
+				console.log("arr =>", arr);
+				this.allNews = arr;
+				this.fetchPosts();
+			} catch (err) {
+				console.log(`Ошибка в searchQuery(newValue) ${err}`);
 			}
+		},
+		searchQueryDate(newValue) {
+			if (this.page > 1) this.page = 1;
+			this.allNews = lastNews;
 			console.log("searchQuery(newValue) =>", newValue);
 			try {
 				const arr = this.allNews.filter((item) =>
-					item.date.includes(newValue.toLowerCase())
+					item.date.toLowerCase().includes(newValue.toLowerCase())
 				);
 				console.log("arr =>", arr);
 				this.allNews = arr;
@@ -186,13 +199,12 @@ export default {
 			}
 		},
 		searchQueryText(newValue) {
-			if (!newValue) {
-				this.allNews = lastNews;
-			}
+			if (this.page > 1) this.page = 1;
+			this.allNews = lastNews;
 			console.log("searchQuery(newValue) =>", newValue);
 			try {
 				const arr = this.allNews.filter((item) =>
-					item.text.includes(newValue.toLowerCase())
+					item.text.toLowerCase().includes(newValue.toLowerCase())
 				);
 				console.log("arr =>", arr);
 				this.allNews = arr;
